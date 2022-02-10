@@ -10,79 +10,78 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
+      buttonIsDisabled: true,
     };
   }
 
   handleChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value,
-    });
+    this.setState({ [name]: value }, this.buttonValidate);
   }
 
-  handleClick = (event) => {
-    event.preventDefault();
-    const { email } = this.state;
-    const { history, dispatchEmail } = this.props;
-    dispatchEmail(email);
-    history.push('/carteira');
+  buttonValidate = () => {
+    const MIN_LENGTH = 6;
+    const { email, password } = this.state;
+    const emailCheck = email.toLowerCase().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    // Checking e-mail
+    // SOURCE: https://stackoverflow.com/questions/46155/whats-the-best-way-to-validate-an-email-address-in-javascript
+    const passwordCheck = password.length >= MIN_LENGTH;
+    this.setState({ buttonIsDisabled: !(emailCheck && passwordCheck) });
   }
 
   render() {
-    const { email, password } = this.state;
-    const MIN_LENGTH = 6;
-    let disabledButton = true;
-
-    if (email.includes('@' && '.com') && password.length >= MIN_LENGTH) {
-      disabledButton = false;
-    } else {
-      disabledButton = true;
-    }
-
+    const { email, password, buttonIsDisabled } = this.state;
+    const { getEmail, history } = this.props;
     return (
       <div>
-        <form>
-          <label htmlFor="email-input">
+        <h1>Trybe</h1>
+        <section>
+          <label htmlFor="email">
             Email
             <input
-              data-testid="email-input"
-              id="email-input"
-              type="email"
               name="email"
+              type="email"
+              id="email"
+              data-testid="email-input"
+              value={ email }
               onChange={ this.handleChange }
             />
           </label>
-          <label htmlFor="password-input">
-            Senha
+          <label htmlFor="password">
+            Password
             <input
-              data-testid="password-input"
-              id="password-input"
-              type="password"
               name="password"
+              type="password"
+              id="password"
+              data-testid="password-input"
+              value={ password }
               onChange={ this.handleChange }
             />
           </label>
           <button
-            disabled={ disabledButton }
-            type="submit"
-            onClick={ this.handleClick }
+            type="button"
+            disabled={ buttonIsDisabled }
+            onClick={ () => {
+              getEmail(email);
+              history.push('/carteira');
+            } }
           >
             Entrar
           </button>
-        </form>
+        </section>
       </div>
     );
   }
 }
 
 Login.propTypes = {
+  getEmail: PropTypes.func.isRequired,
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
+    push: PropTypes.func,
   }).isRequired,
-  dispatchEmail: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchEmail: (value) => dispatch(getLogin(value)),
-}); // SOURCE: Mentoria de 09/02/2021 do Rod.
+  getEmail: (email) => dispatch(getLogin(email)),
+});
 
 export default connect(null, mapDispatchToProps)(Login);

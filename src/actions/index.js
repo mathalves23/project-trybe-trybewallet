@@ -1,17 +1,12 @@
 // Coloque aqui suas actions
-import { USER_LOGIN, GET_CURRENCIES, GET_EXPENSES } from './actionTypes';
+export const LOGIN_USER = 'LOGIN_USER';
+export const CHANGE_WALLET = 'CHANGE_WALLET';
 
 export const getLogin = (email) => ({
-  type: USER_LOGIN,
+  type: LOGIN_USER,
   email,
 });
 
-export const getCurrencies = (currencies) => ({
-  type: GET_CURRENCIES,
-  currencies,
-});
-
-export const getExpenses = (firstExpense) => ({
-  type: GET_EXPENSES,
-  firstExpense,
+export const getWallet = () => ({
+  type: CHANGE_WALLET,
 });
