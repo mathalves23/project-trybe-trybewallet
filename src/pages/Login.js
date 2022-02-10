@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getUser } from '../actions';
+import { getLogin } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -82,7 +82,7 @@ Login.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchEmail: (value) => dispatch(getUser(value)),
+  dispatchEmail: (value) => dispatch(getLogin(value)),
 }); // SOURCE: Mentoria de 09/02/2021 do Rod.
 
 export default connect(null, mapDispatchToProps)(Login);
