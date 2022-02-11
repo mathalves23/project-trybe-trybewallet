@@ -11,8 +11,8 @@ class Formulario extends React.Component {
       value: '',
       description: '',
       currency: 'USD',
-      method: '',
-      tag: '',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
       exchangeRates: '',
       id: 0,
     };
@@ -33,6 +33,12 @@ class Formulario extends React.Component {
     });
   }
 
+  handleChange = ({ target: { name, value } }) => {
+    this.setState({
+      [name]: value,
+    });
+  }
+
   handleState() {
     this.setState((state) => ({
       id: state.id + 1,
@@ -42,18 +48,23 @@ class Formulario extends React.Component {
     }));
   }
 
-  handleChange({ target }) {
-    const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
-  }
-
   render() {
     const { getInfo } = this.props;
     const { id, value, description, tag, currency, method, exchangeRates } = this.state;
     return (
       <form>
+        <label htmlFor="value-input">
+          Valor
+          <input
+            name="value"
+            id="value-input"
+            type="number"
+            data-testid="value-input"
+            value={ value }
+            onChange={ this.handleChange }
+          />
+        </label>
+
         <label htmlFor="currency-input">
           Moeda
           <select
