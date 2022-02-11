@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import coinsApi from '../services';
+import fetchCoinsAPI from '../services';
 import { fetchCurrencies } from '../actions';
 
 class Formulario extends React.Component {
@@ -11,31 +11,25 @@ class Formulario extends React.Component {
       value: '',
       description: '',
       currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
+      method: '',
+      tag: '',
       exchangeRates: '',
       id: 0,
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleState = this.handleState.bind(this);
-    this.getCurrencies = this.getCurrencies.bind(this);
+    this.handleInitialState = this.handleState.bind(this);
+    this.getCurriencesState = this.getCurrencies.bind(this);
   }
 
   async componentDidMount() {
-    const coins = await coinsApi();
+    const coins = await fetchCoinsAPI();
     this.getCurrencies(coins);
   }
 
-  getCurrencies(coins) {
+  getCurrencies(exCoin) {
     this.setState({
-      exchangeRates: Object.values(coins),
-    });
-  }
-
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value,
+      exchangeRates: Object.values(exCoin),
     });
   }
 
@@ -48,35 +42,45 @@ class Formulario extends React.Component {
     }));
   }
 
+  handleChange({ target }) {
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    });
+  }
+
   render() {
     const { getInfo } = this.props;
     const { id, value, description, tag, currency, method, exchangeRates } = this.state;
     return (
       <form>
-        <label htmlFor="value-input">
-          Valor
-          <input
-            name="value"
-            id="value-input"
-            type="number"
-            data-testid="value-input"
-            value={ value }
-            onChange={ this.handleChange }
-          />
-        </label>
+        <div>
+          <label htmlFor="valor">
+            Valor
+            <input
+              name="value"
+              id="valor"
+              type="number"
+              data-testid="value-input"
+              value={ value }
+              onChange={ this.handleChange }
+            />
+          </label>
+        </div>
 
-        <label htmlFor="currency-input">
-          Moeda
-          <select
-            name="currency"
-            id="currency-input"
-            value={ currency }
-            data-testeid="currency-input"
-            onChange={ this.handleChange }
-          >
-            {exchangeRates
-              ? exchangeRates.map((coin, index) => {
-                if (coin.code === 'USDT' || coin.code === 'BRLT') {
+        <div>
+          <label htmlFor="currency-input">
+            Moeda
+            <select
+              className="form-select"
+              name="currency"
+              id="currency-input"
+              value={ currency }
+              onChange={ this.handleChange }
+              data-testid="currency-input"
+            >
+              { exchangeRates ? exchangeRates.map((coin, index) => {
+                if (coin.code === 'USDT' || coin.codein === 'BRLT') {
                   return null;
                 }
                 return (
@@ -85,55 +89,64 @@ class Formulario extends React.Component {
                     value={ coin.code }
                     data-testid={ coin.code }
                   >
-                    {coin.code}
+                    { coin.code }
                   </option>);
               }) : null}
-          </select>
-        </label>
+            </select>
+          </label>
+        </div>
 
-        <label htmlFor="method-input">
+        <div>
           Método de pagamento
-          <select
-            name="method"
-            value={ method }
-            id="method-input"
-            onChange={ this.handleChange }
-            data-testid="method-input"
-          >
-            <option value="Dinheiro">Dinheiro</option>
-            <option value="Cartão de crédito">Cartão de crédito</option>
-            <option value="Cartão de débito">Cartão de débito</option>
-          </select>
-        </label>
+          <label htmlFor="method-input">
+            <select
+              name="method"
+              value={ method }
+              id="method-input"
+              onChange={ this.handleChange }
+              data-testid="method-input"
+            >
+              <option> </option>
+              <option value="Dinheiro">Dinheiro</option>
+              <option value="Cartão de crédito">Cartão de crédito</option>
+              <option value="Cartão de débito">Cartão de débito</option>
+            </select>
+          </label>
+        </div>
 
-        <label htmlFor="tag-input">
-          Tag
-          <select
-            name="tag"
-            value={ tag }
-            id="tag-input"
-            onChange={ this.handleChange }
-            data-testid="tag-input"
-          >
-            <option value="Alimentção">Alimentação</option>
-            <option value="Lazer">Lazer</option>
-            <option value="Trabalho">Trabalho</option>
-            <option value="Transporte">Transporte</option>
-            <option value="Saúde">Saúde</option>
-          </select>
-        </label>
+        <div>
+          <label htmlFor="tag-input">
+            Tag
+            <select
+              name="tag"
+              value={ tag }
+              id="tag-input"
+              onChange={ this.handleChange }
+              data-testid="tag-input"
+            >
+              <option> </option>
+              <option value="Alimentção">Alimentação</option>
+              <option value="Lazer">Lazer</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Saúde">Saúde</option>
+            </select>
+          </label>
+        </div>
 
-        <label htmlFor="description-input">
-          Descrição
-          <input
-            type="text"
-            name="description"
-            id="description-input"
-            value={ description }
-            onChange={ this.handleChange }
-            data-testid="description-input"
-          />
-        </label>
+        <div>
+          <label htmlFor="tag-input">
+            Descrição
+            <input
+              name="description"
+              id="description"
+              type="text"
+              value={ description }
+              onChange={ this.handleChange }
+              data-testid="description-input"
+            />
+          </label>
+        </div>
 
         <button
           type="button"
@@ -155,10 +168,13 @@ class Formulario extends React.Component {
     );
   }
 }
+
 Formulario.propTypes = {
   getInfo: PropTypes.func.isRequired,
 };
+
 const mapDispatchToProps = (dispatch) => ({
-  getInfo: (currience) => dispatch(fetchCurrencies(currience)),
+  getInfo: (currency) => dispatch(fetchCurrencies(currency)),
 });
+
 export default connect(null, mapDispatchToProps)(Formulario);
