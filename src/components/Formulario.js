@@ -10,7 +10,7 @@ class Formulario extends React.Component {
     this.state = {
       value: '',
       description: '',
-      currency: '',
+      currency: 'USD',
       method: '',
       tag: '',
       exchangeRates: '',
@@ -72,6 +72,7 @@ class Formulario extends React.Component {
                   <option
                     key={ index }
                     value={ coin.code }
+                    data-testid={ coin.code }
                   >
                     {coin.code}
                   </option>);
