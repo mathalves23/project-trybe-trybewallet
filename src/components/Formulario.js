@@ -18,8 +18,8 @@ class Formulario extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleInitialState = this.handleState.bind(this);
-    this.getCurriencesState = this.getCurrencies.bind(this);
+    this.handleState = this.handleState.bind(this);
+    this.getCurrencies = this.getCurrencies.bind(this);
   }
 
   async componentDidMount() {
