@@ -5,6 +5,7 @@ export const LOGIN_USER = 'LOGIN_USER';
 export const CHANGE_WALLET = 'CHANGE_WALLET';
 export const REQUEST_API = 'REQUEST_API';
 export const FAIL_API = 'FAIL_API';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 export const getLogin = (email) => ({
   type: LOGIN_USER,
@@ -33,3 +34,8 @@ export const fetchCurrencies = (expense) => (dispatch) => {
     (error) => dispatch(failApi(error.message)),
   );
 };
+
+export const deleteExpense = (expense) => ({
+  type: DELETE_EXPENSE,
+  expense,
+}); // Lógica realizada com a ajuda da colega Nicole Calderari.
