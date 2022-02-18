@@ -4,5 +4,5 @@ const fetchCoinsAPI = async () => {
   const data = await currencies.json();
   return data;
 };
-
+// Foi criado um arquivo separado para a utilização da API para organizar melhor o código.
 export default fetchCoinsAPI;

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import fetchCoinsAPI from '../services';
 import { fetchCurrencies } from '../actions';
 
-class Formulario extends React.Component {
+class Expenses extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -169,12 +169,14 @@ class Formulario extends React.Component {
   }
 }
 
-Formulario.propTypes = {
+Expenses.propTypes = {
   getInfo: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getInfo: (currency) => dispatch(fetchCurrencies(currency)),
 });
+// mapDispatchToProps utilizado para despachar o estado com o dado que está armazenado no estado local.
+// Estrutura desenvolvida com ajuda do Ander na revisão de Redux do dia 10/02.
 
-export default connect(null, mapDispatchToProps)(Formulario);
+export default connect(null, mapDispatchToProps)(Expenses);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteExpense } from '../actions';
 
-class Despesas extends React.Component {
+class ExpenseTable extends React.Component {
   render() {
     const { expenses, buttonDelete } = this.props;
     return (
@@ -56,7 +56,7 @@ class Despesas extends React.Component {
   }
 }
 
-Despesas.propTypes = {
+ExpenseTable.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   buttonDelete: PropTypes.func.isRequired,
 };
@@ -69,4 +69,4 @@ const mapDispatchToProps = (dispatch) => ({
   buttonDelete: (expense) => dispatch(deleteExpense(expense)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Despesas);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseTable);
